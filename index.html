@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -15,8 +15,28 @@
         <script src="js/moment.js"></script>
         <script src="js/angular.min.js"></script>
         <script src="app/app.js"></script>
+
+        <link href="https://cdn.rawgit.com/csaladenes/ddc0b326b93ec641c84f/raw/nv.d3.css" rel="stylesheet"/>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="https://cdn.rawgit.com/csaladenes/ddc0b326b93ec641c84f/raw/nv.d3.min.js"></script>
+        <style>
+            table {
+                border-collapse: collapse;
+            }
+
+            td {
+                border: solid 1px;
+
+            }
+
+            #chart svg {
+                width: 100%;
+                height: 300px;
+            }
+        </style>
+
     </head>
-    <body  ng-app = "queryApp" ng-controller = "queryControllers" ng-cloaked>
+    <body ng-app="queryApp" ng-controller="queryControllers" ng-cloaked>
         <div class="navbar navbar-default" id="navbar">
             <div class="container" id="navbar-container">
                 <div class="navbar-header">
@@ -70,10 +90,13 @@
                     </div>
                     <div class="col-md-2">Date:
                         <div class="input-group date">
-                            <input ng-model = "selectDate" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                            <input ng-model="selectDate" type="text" class="form-control"><span
+                                class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-lg btn-primary" ng-click="query(topQuery, orderBy, targetType, selectDate)">Query</button>
+                    <button type="button" class="btn btn-lg btn-primary"
+                            ng-click="query(topQuery, orderBy, targetType, selectDate)">Query
+                    </button>
 
                 </div>
                 <div class="well" style="margin-top: 30px">
@@ -81,78 +104,206 @@
                     type <strong>{{targetType}}</strong>, for date {{selectDate}}
 
                 </div>
-<pre>
-    SELECT
-</pre>
+                <pre>
+                    SELECT
+                </pre>
             </div>
+            <div class="container">
+                <div id="chart">
+                    <svg></svg>
+                </div>
+            </div>
+
+
             <!--<div class="row">-->
-                <!--<div class="col-md-2">PageSize:-->
-                    <!--<select ng-model="entryLimit" class="form-control">-->
-                        <!--<option>5</option>-->
-                        <!--<option>10</option>-->
-                        <!--<option>20</option>-->
-                        <!--<option>50</option>-->
-                        <!--<option>100</option>-->
-                    <!--</select>-->
-                <!--</div>-->
-                <!--<div class="col-md-3">Filter:-->
-                    <!--<input type="text" ng-model="search" ng-change="filter()" placeholder="Filter"-->
-                           <!--class="form-control"/>-->
-                <!--</div>-->
-                <!--<div class="col-md-4">-->
-                    <!--<h5>Filtered {{ filtered.length }} of {{ totalItems}} total customers</h5>-->
-                <!--</div>-->
+            <!--<div class="col-md-2">PageSize:-->
+            <!--<select ng-model="entryLimit" class="form-control">-->
+            <!--<option>5</option>-->
+            <!--<option>10</option>-->
+            <!--<option>20</option>-->
+            <!--<option>50</option>-->
+            <!--<option>100</option>-->
+            <!--</select>-->
+            <!--</div>-->
+            <!--<div class="col-md-3">Filter:-->
+            <!--<input type="text" ng-model="search" ng-change="filter()" placeholder="Filter"-->
+            <!--class="form-control"/>-->
+            <!--</div>-->
+            <!--<div class="col-md-4">-->
+            <!--<h5>Filtered {{ filtered.length }} of {{ totalItems}} total customers</h5>-->
+            <!--</div>-->
             <!--</div>-->
             <!--<br/>-->
             <!--<div class="row">-->
-                <!--<div class="col-md-12" ng-show="filteredItems > 0">-->
-                    <!--<table class="table table-striped table-bordered">-->
-                        <!--<thead>-->
-                            <!--<th>Customer Name&nbsp;<a ng-click="sort_by('customerName');"><i-->
-                                    <!--class="glyphicon glyphicon-sort"></i></a></th>-->
-                            <!--<th>Address&nbsp;<a ng-click="sort_by('addressLine1');"><i-->
-                                    <!--class="glyphicon glyphicon-sort"></i></a></th>-->
-                            <!--<th>City&nbsp;<a ng-click="sort_by('city');"><i-->
-                                    <!--class="glyphicon glyphicon-sort"></i></a></th>-->
-                            <!--<th>State&nbsp;<a ng-click="sort_by('state');"><i class="glyphicon glyphicon-sort"></i></a>-->
-                            <!--</th>-->
-                            <!--<th>Postal Code&nbsp;<a ng-click="sort_by('postalCode');"><i-->
-                                    <!--class="glyphicon glyphicon-sort"></i></a></th>-->
-                            <!--<th>Country&nbsp;<a ng-click="sort_by('country');"><i-->
-                                    <!--class="glyphicon glyphicon-sort"></i></a></th>-->
-                            <!--<th>Credit Limit&nbsp;<a ng-click="sort_by('creditLimit');"><i-->
-                                    <!--class="glyphicon glyphicon-sort"></i></a></th>-->
-                        <!--</thead>-->
-                        <!--<tbody>-->
-                            <!--<tr ng-repeat="data in filtered = (list | filter:search | orderBy : predicate :reverse) | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">-->
-                                <!--<td>{{data.customerName}}</td>-->
-                                <!--<td>{{data.addressLine1}}</td>-->
-                                <!--<td>{{data.city}}</td>-->
-                                <!--<td>{{data.state}}</td>-->
-                                <!--<td>{{data.postalCode}}</td>-->
-                                <!--<td>{{data.country}}</td>-->
-                                <!--<td>{{data.creditLimit}}</td>-->
-                            <!--</tr>-->
-                        <!--</tbody>-->
-                    <!--</table>-->
-                <!--</div>-->
-                <!--<div class="col-md-12" ng-show="filteredItems == 0">-->
-                    <!--<div class="col-md-12">-->
-                        <!--<h4>No customers found</h4>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="col-md-12" ng-show="filteredItems > 0">-->
-                    <!--<div pagination="" page="currentPage" on-select-page="setPage(page)" boundary-links="true"-->
-                         <!--total-items="filteredItems" items-per-page="entryLimit" class="pagination-small"-->
-                         <!--previous-text="&laquo;" next-text="&raquo;"></div>-->
+            <!--<div class="col-md-12" ng-show="filteredItems > 0">-->
+            <!--<table class="table table-striped table-bordered">-->
+            <!--<thead>-->
+            <!--<th>Customer Name&nbsp;<a ng-click="sort_by('customerName');"><i-->
+            <!--class="glyphicon glyphicon-sort"></i></a></th>-->
+            <!--<th>Address&nbsp;<a ng-click="sort_by('addressLine1');"><i-->
+            <!--class="glyphicon glyphicon-sort"></i></a></th>-->
+            <!--<th>City&nbsp;<a ng-click="sort_by('city');"><i-->
+            <!--class="glyphicon glyphicon-sort"></i></a></th>-->
+            <!--<th>State&nbsp;<a ng-click="sort_by('state');"><i class="glyphicon glyphicon-sort"></i></a>-->
+            <!--</th>-->
+            <!--<th>Postal Code&nbsp;<a ng-click="sort_by('postalCode');"><i-->
+            <!--class="glyphicon glyphicon-sort"></i></a></th>-->
+            <!--<th>Country&nbsp;<a ng-click="sort_by('country');"><i-->
+            <!--class="glyphicon glyphicon-sort"></i></a></th>-->
+            <!--<th>Credit Limit&nbsp;<a ng-click="sort_by('creditLimit');"><i-->
+            <!--class="glyphicon glyphicon-sort"></i></a></th>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr ng-repeat="data in filtered = (list | filter:search | orderBy : predicate :reverse) | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">-->
+            <!--<td>{{data.customerName}}</td>-->
+            <!--<td>{{data.addressLine1}}</td>-->
+            <!--<td>{{data.city}}</td>-->
+            <!--<td>{{data.state}}</td>-->
+            <!--<td>{{data.postalCode}}</td>-->
+            <!--<td>{{data.country}}</td>-->
+            <!--<td>{{data.creditLimit}}</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+            <!--</table>-->
+            <!--</div>-->
+            <!--<div class="col-md-12" ng-show="filteredItems == 0">-->
+            <!--<div class="col-md-12">-->
+            <!--<h4>No customers found</h4>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-12" ng-show="filteredItems > 0">-->
+            <!--<div pagination="" page="currentPage" on-select-page="setPage(page)" boundary-links="true"-->
+            <!--total-items="filteredItems" items-per-page="entryLimit" class="pagination-small"-->
+            <!--previous-text="&laquo;" next-text="&raquo;"></div>-->
 
 
-                <!--</div>-->
-            </div>
+            <!--</div>-->
+        </div>
         </div>
         </div>
 
         <script src="js/ui-bootstrap-tpls-0.10.0.min.js"></script>
+        <script>
+            load();
 
+            function load() {
+
+                //construct url
+                var url = "ASD"
+                //load
+                d3.json(url, function (d) {
+                    d = {
+                        "code": "The Orange Legend",
+                        "x_name": "This is X AXIS",
+                        "y_name": "This is Y AXIS",
+                        "column_names": ["Time", "Count"],
+                        "data": [["2011-12-31", 9019518.215], ["2010-12-31", 8256969.232]]}
+
+                    console.log(url);
+
+                    // render the table
+                    tabulate(d.data, d.column_names);
+
+                    // render the chart with nvd3
+                    nv.addGraph(function () {
+                        var chart = nv.models.lineChart()
+                                .margin({
+                                    left: 100,
+                                    bottom: 50
+                                })
+                                .useInteractiveGuideline(false)
+                                .transitionDuration(350)
+                                .showLegend(true)
+                                .showYAxis(true)
+                                .showXAxis(true);
+
+                        chart.xAxis
+                                .axisLabel(d.x_name)
+                                .tickFormat(d3.format('.02f'));
+
+
+                        chart.yAxis
+                                .axisLabel(d.y_name)
+                                .tickFormat(d3.format('.02f'));
+
+
+                        var chartData = [{
+                            values: [], //values - represents the array of {x,y} data points
+                            key: d.code, //key  - the name of the series.
+                            color: '#ff7f0e' //color - optional: choose your own line color.
+                        }];
+
+                        var roots = d.data.map(function (e) {
+                            return {
+                                x: e[0].slice(0, 4),
+                                y: e[1] / 1000000
+                            };
+                        });
+
+                        //push it to chartData;
+                        //change index or wrap in loop if more datasets graphed on the same chart, e.g. emissions from fossil, gas, etc.
+                        chartData[0].values = roots;
+
+                        d3.select('#chart svg') //select the <svg> element you want to render the chart in.
+                                .datum(chartData) //populate the <svg> element with chart data...
+                                .call(chart); //render the chart
+
+                        //Update the chart when window resizes.
+                        nv.utils.windowResize(function () {
+                            chart.update();
+                        });
+                        return chart;
+                    });
+                });
+            }
+
+            nv.dev = false; //surpres nvd3 console logs
+
+
+            //create table from d3 data [[,][,],..]
+            function tabulate(data, columns) {
+
+                //remove existing table (if), create new one
+                d3.select("#datatable").selectAll("table").remove();
+                var table = d3.select("#datatable").append("table"),
+                        thead = table.append("thead"),
+                        tbody = table.append("tbody");
+
+                //append the header row
+                thead.append("tr")
+                        .selectAll("th")
+                        .data(columns)
+                        .enter()
+                        .append("th")
+                        .text(function (column) {
+                            return column;
+                        });
+
+                // create a row for each object in the data
+                var rows = tbody.selectAll("tr")
+                        .data(data)
+                        .enter()
+                        .append("tr");
+
+                // create a cell in each row for each column
+                var cells = rows.selectAll("td")
+                        .data(function (row) {
+                            return columns.map(function (column) {
+                                return {
+                                    column: column,
+                                    value: row
+                                };
+                            });
+                        })
+                        .enter()
+                        .append("td")
+                        .text(function (d, i) {
+                            return d.value[i];
+                        });
+
+                firstgo = false;
+                return table;
+            }
+        </script>
     </body>
 </html>
